@@ -1,8 +1,7 @@
-package org.electronicsscraper;
+package org.electronicsscraper.service;
 
 
 import org.electronicsscraper.model.Product;
-import org.electronicsscraper.model.ScanCategoryEnum;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;

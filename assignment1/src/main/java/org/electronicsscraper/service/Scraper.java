@@ -1,4 +1,4 @@
-package org.electronicsscraper;
+package org.electronicsscraper.service;
 
 import lombok.Getter;
 import lombok.Setter;
