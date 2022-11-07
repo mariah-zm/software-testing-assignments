@@ -26,6 +26,10 @@ public abstract class Scraper {
         this.driver = new ChromeDriver();
     }
 
+    public void delete() {
+        this.driver.close();
+    }
+
     protected void navigateToHomePage() {
         this.driver.navigate().to(this.website);
         this.driver.manage().window().maximize();

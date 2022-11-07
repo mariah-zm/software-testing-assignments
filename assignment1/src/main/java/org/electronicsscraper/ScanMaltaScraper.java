@@ -1,8 +1,8 @@
 package org.electronicsscraper;
 
 
-import org.electronicsscraper.model.ScanCategoryEnum;
 import org.electronicsscraper.model.Product;
+import org.electronicsscraper.model.ScanCategoryEnum;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -16,41 +16,23 @@ public class ScanMaltaScraper extends Scraper {
         super("https://www.scanmalta.com/shop/");
     }
 
-    public List<Product> searchByInput(String input) {
+    public List<Product> searchByInput(String input, int numProducts) {
         this.navigateToHomePage();
 
         this.driver.findElement(By.id("search")).sendKeys(input);
         this.driver.findElement(By.className("search")).click();
 
-        WebElement productsGrid = this.driver.findElement(By.className("products-grid"));
-        List<WebElement> productsElems = productsGrid.findElements(By.className("product-item-info"));
-        return extractProductsInfo(productsElems);
+        return getProductsFromPage(numProducts);
     }
 
-    public void searchByCategory(ScanCategoryEnum category) {
-        this.navigateToHomePage();
-
-        List<WebElement> categoryElems = this.driver.findElements(By.className("top-category"));
-
-        for (WebElement elem: categoryElems) {
-            if (elem.getText().equals(category.toString())){
-                elem.click();
-
-                List<WebElement> bookItems = this.driver.findElements(By.className("book-item"));
-
-                break;
-            }
-        }
+    public List<Product> searchByBestSellers(int numProducts) {
+        this.navigateToMenuItem("Best Sellers");
+        return getProductsFromPage(numProducts);
     }
 
-    public void searchByBestsellers() {
-        this.navigateToEndpoint("bestsellers");
-        List<WebElement> bookItems = this.driver.findElements(By.className("book-item"));
-    }
-
-    public void searchByLatestProducts() {
-        this.navigateToEndpoint("top-new-releases");
-        List<WebElement> bookItems = this.driver.findElements(By.className("book-item"));
+    public List<Product> searchByLatestProducts(int numProducts) {
+        this.navigateToMenuItem("Latest Products");
+        return getProductsFromPage(numProducts);
     }
 
     @Override
@@ -89,6 +71,27 @@ public class ScanMaltaScraper extends Scraper {
         }
 
         return products;
+    }
+
+    private void navigateToMenuItem(String item) {
+        this.navigateToHomePage();
+        WebElement menuElem = this.driver.findElement(By.className("header-menu-wrap"));
+        List<WebElement> menuLinks = menuElem.findElements(By.className("menu-link"));
+
+        for (WebElement link: menuLinks) {
+            String menuItem = link.getText();
+            if (menuItem.equalsIgnoreCase(item)) {
+                this.driver.navigate().to(link.getAttribute("href"));
+                break;
+            }
+        }
+    }
+
+    private List<Product> getProductsFromPage(int numProducts) {
+        WebElement productsGrid = this.driver.findElement(By.className("products-grid"));
+        List<WebElement> productsElems = productsGrid.findElements(By.className("product-item-info"));
+        int toIndex = Math.min(productsElems.size(), numProducts) - 1;
+        return extractProductsInfo(productsElems.subList(0, toIndex));
     }
 
 }
