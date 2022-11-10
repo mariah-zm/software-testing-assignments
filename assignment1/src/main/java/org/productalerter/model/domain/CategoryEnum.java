@@ -1,4 +1,4 @@
-package org.electronicsscraper.model.domain;
+package org.productalerter.model.domain;
 
 public enum CategoryEnum {
 

@@ -1,22 +1,20 @@
-package org.electronicsscraper.model.http;
+package org.productalerter.model.http;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class AlertResponse {
+@NoArgsConstructor
+public class AlertRequest {
 
-    private String id;
     private int alertType;
     private String heading;
     private String description;
     private String url;
-    private String imageURL;
+    private String imageUrl;
     private String postedBy;
     private long priceInCents;
-    private LocalDateTime postDate;
 
 }

@@ -1,4 +1,4 @@
-package org.electronicsscraper.model.domain;
+package org.productalerter.model.domain;
 
 import lombok.Getter;
 import lombok.Setter;

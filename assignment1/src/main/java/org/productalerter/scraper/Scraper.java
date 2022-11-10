@@ -1,11 +1,16 @@
-package org.electronicsscraper.scraper;
+package org.productalerter.scraper;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.electronicsscraper.model.domain.Product;
+import org.productalerter.exception.CategoryNotFoundException;
+import org.productalerter.exception.WebScraperException;
+import org.productalerter.model.domain.MaltaParkProduct;
+import org.productalerter.model.domain.Product;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,6 +40,10 @@ public abstract class Scraper {
         driver.navigate().to(website);
         driver.manage().window().maximize();
     }
+
+    public abstract List<MaltaParkProduct> searchByInput(String input, int numProducts) throws WebScraperException;
+
+    public abstract List<MaltaParkProduct> searchByCategory(String category, int numProducts) throws WebScraperException, CategoryNotFoundException;
 
     protected abstract Product extractProductInfo(WebElement element);
 

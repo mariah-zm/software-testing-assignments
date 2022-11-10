@@ -1,9 +1,9 @@
-package org.electronicsscraper.scraper;
+package org.productalerter.scraper;
 
-import org.electronicsscraper.exception.CategoryNotFoundException;
-import org.electronicsscraper.model.domain.MaltaParkProduct;
-import org.electronicsscraper.model.domain.Product;
-import org.electronicsscraper.service.MarketAlertUmHttpService;
+import org.productalerter.exception.CategoryNotFoundException;
+import org.productalerter.model.domain.MaltaParkProduct;
+import org.productalerter.model.domain.Product;
+import org.productalerter.service.MarketAlertUmPublisher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,12 +16,12 @@ class MaltaParkScraperTest {
     final String USER_ID = "b9ed2dbc-141a-4395-921d-ee8779610e1f";
 
     MaltaParkScraper scraper;
-    MarketAlertUmHttpService httpService;
+    MarketAlertUmPublisher httpService;
 
     @BeforeEach
     public void setup() {
         this.scraper = new MaltaParkScraper();
-        this.httpService = new MarketAlertUmHttpService(USER_ID);
+        this.httpService = new MarketAlertUmPublisher(USER_ID);
     }
 
     @AfterEach

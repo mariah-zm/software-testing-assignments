@@ -1,7 +1,8 @@
-package org.electronicsscraper.scraper;
+package org.productalerter.scraper;
 
-import org.electronicsscraper.exception.CategoryNotFoundException;
-import org.electronicsscraper.model.domain.MaltaParkProduct;
+import org.productalerter.exception.CategoryNotFoundException;
+import org.productalerter.exception.WebScraperException;
+import org.productalerter.model.domain.MaltaParkProduct;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -18,8 +19,13 @@ public class MaltaParkScraper extends Scraper {
         super("https://www.maltapark.com/");
     }
 
-    public List<MaltaParkProduct> searchByInput(String input, int numProducts) throws InterruptedException {
-        this.navigateToHomePage();
+    @Override
+    public List<MaltaParkProduct> searchByInput(String input, int numProducts) throws WebScraperException {
+        try {
+            this.navigateToHomePage();
+        } catch (InterruptedException ex) {
+            throw new WebScraperException("Could not retrieve products", ex);
+        }
 
         this.driver.findElement(By.id("search")).sendKeys(input);
         this.driver.findElement(By.className("search-checkbox")).click();
@@ -28,8 +34,12 @@ public class MaltaParkScraper extends Scraper {
         return getProductsFromPage(numProducts);
     }
 
-    public List<MaltaParkProduct> searchByCategory(String navBarCategory, int numProducts) throws InterruptedException, CategoryNotFoundException {
-        this.navigateToHomePage();
+    public List<MaltaParkProduct> searchByCategory(String navBarCategory, int numProducts) throws WebScraperException, CategoryNotFoundException {
+        try {
+            this.navigateToHomePage();
+        } catch (InterruptedException ex) {
+            throw new WebScraperException("Could not retrieve products", ex);
+        }
 
         List<WebElement> categoryElems = this.driver.findElements(By.className("category"));
 
@@ -39,7 +49,7 @@ public class MaltaParkScraper extends Scraper {
                 return getProductsFromPage(numProducts);
             }
         }
-        throw new CategoryNotFoundException("Category " + navBarCategory + " does not exist");
+        throw new CategoryNotFoundException("Category " + navBarCategory + " does not exist on " + this.getWebsite());
     }
 
     @Override
