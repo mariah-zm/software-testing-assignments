@@ -1,6 +1,6 @@
-package org.electronicsscraper.model;
+package org.electronicsscraper.model.domain;
 
-public enum AlertCategoryEnum {
+public enum CategoryEnum {
 
     CAR(1),
     BOAT(2),
@@ -11,7 +11,7 @@ public enum AlertCategoryEnum {
 
     private final int value;
 
-    AlertCategoryEnum(int value) {
+    CategoryEnum(int value) {
         this.value = value;
     }
 

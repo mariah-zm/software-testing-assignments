@@ -1,6 +1,7 @@
 package org.electronicsscraper.scraper;
 
-import org.electronicsscraper.model.Product;
+import org.electronicsscraper.exception.CategoryNotFoundException;
+import org.electronicsscraper.model.domain.MaltaParkProduct;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -17,13 +18,28 @@ public class MaltaParkScraper extends Scraper {
         super("https://www.maltapark.com/");
     }
 
-    public List<Product> searchByInput(String input, int numProducts) throws InterruptedException {
+    public List<MaltaParkProduct> searchByInput(String input, int numProducts) throws InterruptedException {
         this.navigateToHomePage();
 
         this.driver.findElement(By.id("search")).sendKeys(input);
+        this.driver.findElement(By.className("search-checkbox")).click();
         this.driver.findElement(By.className("btn-search")).click();
 
         return getProductsFromPage(numProducts);
+    }
+
+    public List<MaltaParkProduct> searchByCategory(String navBarCategory, int numProducts) throws InterruptedException, CategoryNotFoundException {
+        this.navigateToHomePage();
+
+        List<WebElement> categoryElems = this.driver.findElements(By.className("category"));
+
+        for(WebElement elem: categoryElems) {
+            if (elem.getText().equals(navBarCategory)) {
+                elem.click();
+                return getProductsFromPage(numProducts);
+            }
+        }
+        throw new CategoryNotFoundException("Category " + navBarCategory + " does not exist");
     }
 
     @Override
@@ -32,7 +48,7 @@ public class MaltaParkScraper extends Scraper {
         driver.manage().window().maximize();
 
         // Logic to handle dismissal of alert pop up on navigation to home screen
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(this.driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("warningpopup")));
 
         // Close button takes 5 seconds to be enabled
@@ -41,64 +57,86 @@ public class MaltaParkScraper extends Scraper {
     }
 
     @Override
-    protected Product extractProductInfo(WebElement element) {
-        Product product = new Product();
+    protected MaltaParkProduct extractProductInfo(WebElement element) {
+        try {
+            // Opening product page in new tab to retrieve information
+            WebElement linkElem = element.findElement(By.xpath(".//a[@class='header']"));
+            String selectLinkOpenInNewTab = Keys.chord(Keys.CONTROL, Keys.RETURN);
+            linkElem.sendKeys(selectLinkOpenInNewTab);
 
-        // Opening product page in new tab to retrieve information
-        WebElement linkElem = element.findElement(By.xpath(".//a[@class='header']"));
-        String selectLinkOpenInNewTab = Keys.chord(Keys.CONTROL, Keys.RETURN);
-        linkElem.sendKeys(selectLinkOpenInNewTab);
+            // Getting tab names and switching to newly opened tab
+            List<String> handles = this.driver.getWindowHandles().stream().toList();
+            this.driver.switchTo().window(handles.get(1));
 
-        // Getting tab names and switching to newly opened tab
-        List<String> handles = this.driver.getWindowHandles().stream().toList();
-        this.driver.switchTo().window(handles.get(1));
+            // Locating web elements containing product information
+            WebElement nameElem = driver.findElement(By.className("top-title"));
+            WebElement priceElem = driver.findElement(By.className("top-price"));
+            WebElement photoElem = driver.findElement(By.className("image-wrapper")).findElement(By.tagName("img"));
+            WebElement descriptionElem = driver.findElement(By.className("readmore-wrapper"));
 
-        WebElement nameElem = driver.findElement(By.className("top-title"));
-        WebElement priceElem = driver.findElement(By.className("top-price"));
-        WebElement photoElem = driver.findElement(By.className("image-wrapper")).findElement(By.tagName("img"));
-        WebElement descriptionElem = driver.findElement(By.className("readmore-wrapper"));
+            List<WebElement> itemDetailsElems = driver.findElements(By.className("item-details"));
+            String category = this.getProductCategory(itemDetailsElems);
 
-        WebElement itemDetailsElem = driver.findElement(By.className("item-details"));
-        List<WebElement> itemDetailsItems = itemDetailsElem.findElements(By.className("item"));
-        String category = "Other";
+            // Setting properties from web elements
+            MaltaParkProduct product = new MaltaParkProduct();
+            product.setName(nameElem.getText());
+            product.setDescription(descriptionElem.getText());
+            product.setPriceInEuros(Double.parseDouble(priceElem.getText().replaceAll("[^(.0-9)]", "")));
+            product.setCategory(category);
+            product.setImageUrl(photoElem.getAttribute("src"));
+            product.setUrl(driver.getCurrentUrl());
 
-        for (WebElement item: itemDetailsItems) {
-            WebElement label = item.findElement(By.tagName("label"));
-            String labelName = label.getText();
+            // Closing opened tab and switching back to search results tab
+            this.driver.close();
+            this.driver.switchTo().window(handles.get(0));
 
-            if (labelName.equals("Category")) {
-                category = item.getText();
+            return product;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    private String getProductCategory(List<WebElement> itemDetailsElems) {
+        for (WebElement elem : itemDetailsElems) {
+            List<WebElement> itemDetailsItems = elem.findElements(By.className("item"));
+
+            for (WebElement item: itemDetailsItems) {
+                WebElement label = item.findElement(By.tagName("label"));
+                String labelName = label.getText();
+
+                if (labelName.contains("Category")) {
+                    String text = item.getText();
+                    return text.substring(text.indexOf(":") + 1);
+                }
             }
         }
 
-        product.setName(nameElem.getText());
-        product.setDescription(descriptionElem.getText());
-        // TODO: check for . to decide if * 100
-        product.setPriceInEuros(Long.parseLong(priceElem.getText().replaceAll("[^(.0-9)]", "")));
-        product.setCategory(category);
-        product.setImageUrl(photoElem.getAttribute("src"));
-        product.setUrl(driver.getCurrentUrl());
-
-        // Closing opened tab and switching back to search results tab
-        this.driver.close();
-        this.driver.switchTo().window(handles.get(0));
-
-        return product;
+        return "Other";
     }
 
-    private List<Product> getProductsFromPage(int numProducts) {
+    private List<MaltaParkProduct> getProductsFromPage(int numProducts) {
         WebElement productListings = this.driver.findElement(By.cssSelector(".items.listings.classifieds"));
         List<WebElement> productsElems = productListings.findElements(By.className("item"));
-        int toIndex = Math.min(productsElems.size(), numProducts) - 1;
-        return extractProductsInfo(productsElems.subList(0, toIndex));
+        return extractProductsInfo(productsElems, numProducts);
     }
 
-    private List<Product> extractProductsInfo(List<WebElement> elements) {
-        List<Product> products = new ArrayList<>();
+    private List<MaltaParkProduct> extractProductsInfo(List<WebElement> elements, int numProducts) {
+        List<MaltaParkProduct> products = new ArrayList<>();
 
         for (WebElement elem : elements) {
-            Product product = extractProductInfo(elem);
-            products.add(product);
+            // Items that are listed as 'WANTED' are ignored
+            if (elem.findElements(By.id("wantedlabel")).isEmpty()) {
+                MaltaParkProduct product = extractProductInfo(elem);
+
+                if (product != null) {
+                    products.add(product);
+                }
+
+                // Breaking from loop if the required amount of products are found
+                if (products.size() == numProducts) {
+                    break;
+                }
+            }
         }
 
         return products;
