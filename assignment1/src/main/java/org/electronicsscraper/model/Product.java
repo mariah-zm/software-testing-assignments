@@ -9,7 +9,8 @@ public class Product {
 
     private String name;
     private String description;
-    private long priceInCents;
+    private long priceInEuros;
+    private String category;
     private String imageUrl;
     private String url;
 

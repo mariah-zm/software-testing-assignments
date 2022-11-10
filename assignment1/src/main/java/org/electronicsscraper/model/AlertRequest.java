@@ -15,7 +15,7 @@ public class AlertRequest extends Alert {
         this.url = product.getUrl();
         this.imageUrl = product.getImageUrl();
         this.postedBy = userId;
-        this.priceInCents = product.getPriceInCents();
+        this.priceInCents = product.getPriceInEuros() * 100;
     }
 
 }
