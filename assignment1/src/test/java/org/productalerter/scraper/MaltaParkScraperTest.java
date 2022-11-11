@@ -1,10 +1,8 @@
-package test.org.productalerter.scraper;
+package org.productalerter.scraper;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.productalerter.exception.WebScraperException;
-import org.productalerter.scraper.MaltaParkScraper;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,8 +21,8 @@ class MaltaParkScraperTest {
     }
 
     @Test
-    public void testSearchByInput() throws WebScraperException {
-        scraper.searchByInput("Toyota Vitz", 5);
+    public void searchByInput() throws org.productalerter.exception.WebScraperException {
+        this.scraper.searchByInput("Fiat", 3);
     }
 
 }
