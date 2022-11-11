@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AlertRequest {
+public class MarketAlertUmRequest {
 
     private int alertType;
     private String heading;

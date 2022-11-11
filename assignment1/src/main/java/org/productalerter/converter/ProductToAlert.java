@@ -1,14 +1,14 @@
 package org.productalerter.converter;
 
 import org.productalerter.model.domain.Product;
-import org.productalerter.model.http.AlertRequest;
+import org.productalerter.model.http.MarketAlertUmRequest;
 
 public class ProductToAlert {
 
     private ProductToAlert() {}
 
-    public static AlertRequest convert(Product product, String userId) {
-        AlertRequest request = new AlertRequest();
+    public static MarketAlertUmRequest convert(Product product, String userId) {
+        MarketAlertUmRequest request = new MarketAlertUmRequest();
         request.setAlertType(product.getCategory().getValue());
         request.setHeading(product.getName());
         request.setDescription(product.getDescription());

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class AlertResponse {
+public class MarketAlertUmResponse {
 
     private String id;
     private int alertType;
