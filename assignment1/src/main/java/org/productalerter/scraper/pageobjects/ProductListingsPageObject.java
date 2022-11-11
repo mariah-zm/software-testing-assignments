@@ -18,15 +18,10 @@ public class ProductListingsPageObject {
     }
 
     public List<MaltaParkProduct> getProductsFromPage(int numProducts) {
-        WebElement productListings = this.driver.findElement(By.cssSelector(".items.listings.classifieds"));
-        List<WebElement> productsElems = productListings.findElements(By.className("item"));
-        return extractProductsInfo(productsElems, numProducts);
-    }
-
-    private List<MaltaParkProduct> extractProductsInfo(List<WebElement> elements, int numProducts) {
+        List<WebElement> listings = this.driver.findElements(By.xpath("//div[@class='ui items listings classifieds clearfix gridview']/div"));
         List<MaltaParkProduct> products = new ArrayList<>();
 
-        for (WebElement elem : elements) {
+        for (WebElement elem : listings) {
             // Items that are listed as 'WANTED' are ignored
             if (elem.findElements(By.id("wantedlabel")).isEmpty()) {
                 MaltaParkProduct product = extractProductInfo(elem);
@@ -51,25 +46,34 @@ public class ProductListingsPageObject {
         try {
             // Opening product page in new tab to retrieve information
             WebElement linkElem = element.findElement(By.xpath(".//a[@class='header']"));
-            String selectLinkOpenInNewTab = Keys.chord(Keys.CONTROL, Keys.RETURN);
-            linkElem.sendKeys(selectLinkOpenInNewTab);
-
-            // Getting tab names and switching to newly opened tab
-            List<String> handles = this.driver.getWindowHandles().stream().toList();
-            this.driver.switchTo().window(handles.get(1));
+            this.openInNewTab(linkElem);
 
             product = new ProductInfoPageObject(this.driver).getProductInfo();
         } catch (Exception ex) {
             product = null;
         }
 
-        // Closing new tab (if opened) and switching back to search results tab
+        this.closeAnyExtraTab();
+
+        return product;
+    }
+
+    private void openInNewTab(WebElement linkElem) {
+        String selectLinkOpenInNewTab = Keys.chord(Keys.CONTROL, Keys.RETURN);
+        linkElem.sendKeys(selectLinkOpenInNewTab);
+
+        // Getting tab names and switching to newly opened tab
+        List<String> handles = this.driver.getWindowHandles().stream().toList();
+        this.driver.switchTo().window(handles.get(1));
+    }
+
+    private void closeAnyExtraTab() {
+        // Closing tab (if opened) and switching back to search results tab
         List<String> handles = this.driver.getWindowHandles().stream().toList();
         if (handles.size() > 1) {
             this.driver.close();
             this.driver.switchTo().window(handles.get(0));
         }
-
-        return product;
     }
+
 }
