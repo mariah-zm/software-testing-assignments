@@ -12,4 +12,3 @@ Feature: Logging into MarketAlertUm
     Given I am a user of MarketAlertUm
     When I login using invalid credentials
     Then I should see the login screen again
-
