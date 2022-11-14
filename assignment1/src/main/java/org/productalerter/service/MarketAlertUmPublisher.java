@@ -35,27 +35,42 @@ public class MarketAlertUmPublisher {
         String reqUrl = this.apiUrl + "Alert";
 
         // Using HttpService to do POST request
-        HttpResponse response = this.httpService.doPost(reqUrl, jsonBody);
+        HttpResponse response;
+        try {
+            response = this.httpService.doPost(reqUrl, jsonBody);
+        } catch (IOException ex) {
+            throw new PublisherException("Could not do POST request", ex);
+        }
 
-        if (response.getStatusLine().getStatusCode() == 201) {
+        int responseCode = response.getStatusLine().getStatusCode();
+
+        if (responseCode == 201) {
             ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
             return mapper.readValue(response.getEntity().getContent(), MarketAlertUmResponse.class);
         }
 
-        throw new PublisherException("Return code is not 201: " + EntityUtils.toString(response.getEntity()));
+        throw new PublisherException("Response code is " + responseCode);
     }
 
-    public String deleteAllAlerts() throws IOException, PublisherException {
+    public String deleteAllAlerts() throws PublisherException, IOException {
         // Forming request url
         String reqUrl = this.apiUrl + "Alert?userId=" + this.userId;
-        // Using HttpService to do DELETE request
-        HttpResponse response = this.httpService.doDelete(reqUrl);
 
-        if (response.getStatusLine().getStatusCode() == 200) {
+        // Using HttpService to do DELETE request
+        HttpResponse response;
+        try {
+            response = this.httpService.doDelete(reqUrl);
+        } catch (IOException ex) {
+            throw new PublisherException("Could not do DELETE request", ex);
+        }
+
+        int responseCode = response.getStatusLine().getStatusCode();
+
+        if (responseCode == 200) {
             return EntityUtils.toString(response.getEntity());
         }
 
-        throw new PublisherException("Return code is not 200: " + EntityUtils.toString(response.getEntity()));
+            throw new PublisherException("Response code is " + responseCode);
     }
 
 }

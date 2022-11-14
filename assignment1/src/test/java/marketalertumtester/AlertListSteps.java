@@ -6,7 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import marketalertumtester.dummies.DummyProductGenerator;
+import marketalertumtester.dummies.DummyProductCreator;
 import marketalertumtester.pageobjects.AlertListPageObject;
 import marketalertumtester.pageobjects.AlertPageObject;
 import marketalertumtester.pageobjects.LoginPageObject;
@@ -54,7 +54,7 @@ public class AlertListSteps {
 
     @Given("I am an administrator of the website and I upload {int} alerts")
     public void iUploadAlerts(int arg0) throws PublisherException, IOException {
-        List<MaltaParkProduct> products = DummyProductGenerator.getDummyProducts(arg0);
+        List<MaltaParkProduct> products = DummyProductCreator.getDummyProducts(arg0);
         for (MaltaParkProduct product: products) {
             this.publisher.publishAlert(product);
         }
@@ -115,7 +115,7 @@ public class AlertListSteps {
 
     @Given("I am an administrator of the website and I upload more than {int} alerts")
     public void iUploadMoreThanAlerts(int arg0) throws PublisherException, IOException {
-        List<MaltaParkProduct> products = DummyProductGenerator.getDummyProducts(arg0 + 1);
+        List<MaltaParkProduct> products = DummyProductCreator.getDummyProducts(arg0 + 1);
         for (MaltaParkProduct product: products) {
             this.publisher.publishAlert(product);
         }
@@ -128,7 +128,7 @@ public class AlertListSteps {
 
     @Given("I am an administrator of the website and I upload an alert of type {int}")
     public void iAmAnAdministratorOfTheWebsiteAndIUploadAnAlertOfType(int alertType) throws WebScraperException, CategoryNotFoundException, PublisherException, IOException {
-        MaltaParkProduct product = DummyProductGenerator.getDummyProductWithCategory(alertType);
+        MaltaParkProduct product = DummyProductCreator.getDummyProductWithCategory(alertType);
         // Resetting category to match alertType
         product.setCategory(CategoryEnum.getByValue(alertType));
         this.publisher.publishAlert(product);

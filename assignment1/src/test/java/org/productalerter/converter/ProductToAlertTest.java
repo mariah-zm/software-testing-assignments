@@ -1,7 +1,6 @@
 package org.productalerter.converter;
 
 import org.junit.jupiter.api.Test;
-import org.productalerter.dummies.DummyProductGenerator;
 import org.productalerter.model.domain.CategoryEnum;
 import org.productalerter.model.domain.MaltaParkProduct;
 import org.productalerter.model.http.MarketAlertUmRequest;

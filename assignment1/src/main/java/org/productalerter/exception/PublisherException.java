@@ -6,4 +6,8 @@ public class PublisherException extends Exception {
         super(message);
     }
 
+    public PublisherException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }
