@@ -146,7 +146,7 @@ class MarketAlertUmCreatorTest {
     }
 
     @Test
-    void testSearchForProductsByCategor_PublisherThrowsExceptionOnce() throws WebScraperException, PublisherException, IOException, CategoryNotFoundException {
+    void testSearchForProductsByCategory_PublisherThrowsExceptionOnce() throws WebScraperException, PublisherException, IOException, CategoryNotFoundException {
         // Arrange
         int numProducts = 3;
         MarketAlertUmResponse publisherResponse = DummyResponseCreator.getDummyResponse();
@@ -171,7 +171,7 @@ class MarketAlertUmCreatorTest {
         // Arrange
         int numProducts = 3;
 
-        when(scraper.searchByCategory(anyString(), anyInt())).thenThrow(WebScraperException.class);
+        when(scraper.searchByCategory(anyString(), anyInt())).thenThrow(CategoryNotFoundException.class);
 
         // Act
         CreatorResponse response = creator.searchForProductsByCategory("", numProducts);

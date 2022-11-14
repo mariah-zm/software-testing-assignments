@@ -66,5 +66,4 @@ public class MaltaParkScraper {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector("button.ui.button.disabled")));
         closeButton.click();
     }
-
 }
