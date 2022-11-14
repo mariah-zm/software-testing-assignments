@@ -21,7 +21,7 @@ public class ItemDetailsPageObject {
         for (WebElement elem : itemDetailsElems) {
             String text = elem.getText();
             if (text.contains("Category")) {
-                return text.substring(text.indexOf(":") + 1);
+                return text.substring(text.indexOf(":") + 2);
             }
         }
 

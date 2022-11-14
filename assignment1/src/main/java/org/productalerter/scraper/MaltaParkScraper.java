@@ -1,34 +1,26 @@
 package org.productalerter.scraper;
 
-import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.productalerter.exception.CategoryNotFoundException;
 import org.productalerter.exception.WebScraperException;
 import org.productalerter.model.domain.MaltaParkProduct;
-import org.productalerter.scraper.pageobjects.ProductInfoPageObject;
 import org.productalerter.scraper.pageobjects.ProductListingsPageObject;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MaltaParkScraper {
 
-    private final String DRIVER_PATH = "src/main/resources/chromedriver";
     private final String WEBSITE = "https://www.maltapark.com/";
 
-    private final ChromeDriver driver;
+    private final WebDriver driver;
 
-    public MaltaParkScraper() {
-        // Setting up chrome driver
-        System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
-        this.driver = new ChromeDriver();
+    public MaltaParkScraper(WebDriver driver) {
+        this.driver = driver;
     }
 
     public List<MaltaParkProduct> searchByInput(String input, int numProducts) throws WebScraperException {
@@ -61,10 +53,6 @@ public class MaltaParkScraper {
             }
         }
         throw new CategoryNotFoundException("Category " + navBarCategory + " does not exist on " + WEBSITE);
-    }
-
-    public void delete() {
-        driver.quit();
     }
 
     private void navigateToHomePage() {
