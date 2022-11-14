@@ -70,7 +70,7 @@ public class MarketAlertUmPublisher {
             return EntityUtils.toString(response.getEntity());
         }
 
-            throw new PublisherException("Response code is " + responseCode);
+        throw new PublisherException("Response code is " + responseCode);
     }
 
 }
