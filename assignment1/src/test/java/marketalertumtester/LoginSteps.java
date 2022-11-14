@@ -22,20 +22,18 @@ public class LoginSteps {
 
     WebDriver driver;
 
-    @Before
-    public void setup() {
-        // Setting up chrome driver
-        System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
-        this.driver = new ChromeDriver();
-    }
-
     @After
     public void teardown() {
-        this.driver.quit();
+        if (this.driver != null) {
+            this.driver.quit();
+        }
     }
 
     @Given("I am a user of MarketAlertUm")
     public void iAmAUserOfMarketAlertUm() {
+        // Setting up chrome driver
+        System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
+        this.driver = new ChromeDriver();
         this.driver.navigate().to(HOME_URL);
     }
 

@@ -14,15 +14,15 @@ public class DummyProductCreator {
         product.setName("Name");
         product.setDescription("Description");
         product.setPriceInEuros(2500.0);
-        product.setImageUrl("image-url");
-        product.setUrl("url");
+        product.setImageUrl("https://www.maltapark.com/asset/itemphotos/9521343/9521343_1.jpg/?x=TWF4Vz01NjMmTWF4SD00MjI=&_ts=10");
+        product.setUrl("https://www.maltapark.com/item/details/9521343");
 
         return product;
     }
 
     public static List<MaltaParkProduct> getDummyProducts(int numProducts) {
         List<MaltaParkProduct> products = new ArrayList<>();
-        for (int i = 0; i <numProducts; ++i) {
+        for (int i = 0; i < numProducts; ++i) {
             products.add(DummyProductCreator.getDummyProduct());
         }
         return products;

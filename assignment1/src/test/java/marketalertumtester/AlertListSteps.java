@@ -39,17 +39,17 @@ public class AlertListSteps {
 
     @Before
     public void setup() {
-        // Setting up chrome driver
-        System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
-        this.driver = new ChromeDriver();
         publisher = new MarketAlertUmPublisher(new HttpService(), userId);
     }
 
     @After
     public void teardown() throws PublisherException, IOException {
         this.publisher.deleteAllAlerts();
-        this.driver.quit();
         this.alerts = null;
+
+        if (this.driver != null) {
+            this.driver.quit();
+        }
     }
 
     @Given("I am an administrator of the website and I upload {int} alerts")
@@ -62,6 +62,9 @@ public class AlertListSteps {
 
     @Given("I am a logged in user of MarketAlertUm")
     public void iAmAUserOfMarketAlertUm() {
+        // Setting up chrome driver
+        System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
+        this.driver = new ChromeDriver();
         new LoginPageObject(driver).login(userId);
     }
 
