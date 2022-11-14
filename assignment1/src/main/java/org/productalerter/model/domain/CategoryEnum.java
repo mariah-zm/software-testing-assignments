@@ -4,8 +4,8 @@ public enum CategoryEnum {
 
     CAR(1),
     BOAT(2),
-    PROPERTY_FOR_SALE(3),
-    PROPERTY_FOR_RENT(4),
+    PROPERTY_FOR_RENT(3),
+    PROPERTY_FOR_SALE(4),
     TOYS(5),
     ELECTRONICS(6);
 

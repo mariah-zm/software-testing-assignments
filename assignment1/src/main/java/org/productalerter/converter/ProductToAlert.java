@@ -15,7 +15,7 @@ public class ProductToAlert {
         request.setUrl(product.getUrl());
         request.setImageUrl(product.getImageUrl());
         request.setPostedBy(userId);
-        request.setPriceInCents(product.getPriceInEuros().longValue() * 100L);
+        request.setPriceInCents((long) (product.getPriceInEuros() * 100));
         return request;
     }
 }
