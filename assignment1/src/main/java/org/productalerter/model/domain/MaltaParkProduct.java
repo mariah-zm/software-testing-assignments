@@ -1,8 +1,23 @@
 package org.productalerter.model.domain;
 
-public class MaltaParkProduct extends Product {
+import lombok.Getter;
+import lombok.Setter;
 
-    @Override
+@Getter
+@Setter
+public class MaltaParkProduct {
+
+    private String name;
+    private String description;
+    private Double priceInEuros;
+    private CategoryEnum category;
+    private String imageUrl;
+    private String url;
+
+    public void setCategory(CategoryEnum category) {
+        this.category = category;
+    }
+
     public void setCategory(String category) {
         this.category = switch (category) {
             case "Cars", "Motorcycles", "Scooters", "Vans & Trucks", "Vehicle Parts", "Quad Bikes" ->

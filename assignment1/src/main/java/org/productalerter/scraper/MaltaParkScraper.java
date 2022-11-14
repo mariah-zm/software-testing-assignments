@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 public class MaltaParkScraper {
 
     private final String DRIVER_PATH = "src/main/resources/chromedriver";

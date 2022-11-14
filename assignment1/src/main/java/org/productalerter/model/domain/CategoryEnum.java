@@ -15,6 +15,15 @@ public enum CategoryEnum {
         this.value = value;
     }
 
+    public static CategoryEnum getByValue(int value) {
+        for(CategoryEnum e: CategoryEnum.values()) {
+            if(e.value == value) {
+                return e;
+            }
+        }
+        return null; // not found
+    }
+
     public int getValue() {
         return value;
     }

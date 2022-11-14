@@ -51,9 +51,9 @@ public class ProductListingsPageObject {
             product = new ProductInfoPageObject(this.driver).getProductInfo();
         } catch (Exception ex) {
             product = null;
+        } finally {
+            this.closeAnyExtraTab();
         }
-
-        this.closeAnyExtraTab();
 
         return product;
     }

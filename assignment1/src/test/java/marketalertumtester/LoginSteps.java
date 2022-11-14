@@ -1,52 +1,63 @@
 package marketalertumtester;
 
 import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import marketalertumtester.helpers.MarketAlertUmTester;
+import marketalertumtester.pageobjects.AlertListPageObject;
+import marketalertumtester.pageobjects.LoginPageObject;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginSteps {
 
+    private final String DRIVER_PATH = "src/main/resources/chromedriver";
+    public  final String HOME_URL = "https://www.marketalertum.com/";
+
     String validUserId = "b9ed2dbc-141a-4395-921d-ee8779610e1f";
     String invalidUserId = "invalid-123";
 
-    ChromeDriver driver = new ChromeDriver();
-    MarketAlertUmTester tester;
+    WebDriver driver;
+
+    @Before
+    public void setup() {
+        // Setting up chrome driver
+        System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
+        this.driver = new ChromeDriver();
+    }
 
     @After
     public void teardown() {
         this.driver.quit();
-        tester = null;
     }
 
     @Given("I am a user of MarketAlertUm")
     public void iAmAUserOfMarketAlertUm() {
-        tester = new MarketAlertUmTester(driver);
+        this.driver.navigate().to(HOME_URL);
     }
 
     @When("I login using valid credentials")
     public void iLoginUsingValidCredentials() {
-        tester.login(validUserId);
+        new LoginPageObject(driver).login(validUserId);
     }
 
     @Then("I should see my alerts")
     public void iShouldSeeMyAlerts() {
         String pageUrl = driver.getCurrentUrl();
-        assertEquals(MarketAlertUmTester.ALERTS_URL, pageUrl);
+        assertEquals(AlertListPageObject.ALERTS_URL, pageUrl);
     }
 
     @When("I login using invalid credentials")
     public void iLoginUsingInvalidCredentials() {
-        tester.login(invalidUserId);
+        new LoginPageObject(driver).login(invalidUserId);
     }
 
     @Then("I should see the login screen again")
     public void iShouldSeeTheLoginScreenAgain() {
         String pageUrl = driver.getCurrentUrl();
-        assertEquals(MarketAlertUmTester.LOGIN_URL, pageUrl);
+        assertEquals(LoginPageObject.LOGIN_URL, pageUrl);
     }
 }
