@@ -28,10 +28,4 @@ public class DummyProductCreator {
         return products;
     }
 
-    public static MaltaParkProduct getDummyProductWithCategory(int category) {
-        MaltaParkProduct product = DummyProductCreator.getDummyProduct();
-        product.setCategory(CategoryEnum.getByValue(category));
-        return product;
-    }
-
 }

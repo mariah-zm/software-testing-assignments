@@ -129,7 +129,7 @@ public class AlertListSteps {
     }
 
     @Given("I am an administrator of the website and I upload an alert of type {int}")
-    public void iAmAnAdministratorOfTheWebsiteAndIUploadAnAlertOfType(int alertType) throws WebScraperException, CategoryNotFoundException, PublisherException, IOException {
+    public void iAmAnAdministratorOfTheWebsiteAndIUploadAnAlertOfType(int alertType) throws PublisherException, IOException {
         MaltaParkProduct product = DummyProductCreator.getDummyProductWithCategory(alertType);
         // Resetting category to match alertType
         product.setCategory(CategoryEnum.getByValue(alertType));

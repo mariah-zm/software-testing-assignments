@@ -27,7 +27,7 @@ public class AlertPageObject {
     public Double findPrice() {
         // Price is in the 4th row
         String priceContent = this.alert.findElements(By.xpath("//tr/td")).get(3).getText();
-        String priceOnly = priceContent.substring(priceContent.indexOf('\u20AC') + 1);
+        String priceOnly = priceContent.substring(priceContent.indexOf('\u20AC') + 1); // character is the euro sign
         return Double.parseDouble(priceOnly);
     }
 
