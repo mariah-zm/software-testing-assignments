@@ -13,7 +13,7 @@ public class DummyProductCreator {
         product.setCategory(CategoryEnum.CAR);
         product.setName("Name");
         product.setDescription("Description");
-        product.setPriceInEuros(2500.0);
+        product.setPriceInEuros(360000.0);
         product.setImageUrl("https://www.maltapark.com/asset/itemphotos/9521343/9521343_1.jpg/?x=TWF4Vz01NjMmTWF4SD00MjI=&_ts=10");
         product.setUrl("https://www.maltapark.com/item/details/9521343");
 

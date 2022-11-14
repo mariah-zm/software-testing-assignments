@@ -18,9 +18,11 @@ public class AlertListPageObject {
     }
 
     public List<AlertPageObject> getAlerts() {
-        // Navigating to login page
-        this.driver.navigate().to(ALERTS_URL);
-        this.driver.manage().window().maximize();
+        // Navigating to alerts page if not already on page
+        if (!driver.getCurrentUrl().equals(ALERTS_URL)) {
+            this.driver.navigate().to(ALERTS_URL);
+            this.driver.manage().window().maximize();
+        }
 
         List<WebElement> alertsElems = this.driver.findElements(By.tagName("table"));
         List<AlertPageObject> alerts = new ArrayList<>();

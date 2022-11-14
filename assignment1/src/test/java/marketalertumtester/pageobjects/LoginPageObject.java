@@ -15,9 +15,11 @@ public class LoginPageObject {
     }
 
     public void login(String userId) {
-        // Navigating to login page
-        this.driver.navigate().to(LOGIN_URL);
-        this.driver.manage().window().maximize();
+        // Navigating to login page if not already on page
+        if (!driver.getCurrentUrl().equals(LOGIN_URL)) {
+            this.driver.navigate().to(LOGIN_URL);
+            this.driver.manage().window().maximize();
+        }
 
         WebElement inputBox = this.driver.findElement(By.id("UserId"));
         inputBox.sendKeys(userId);

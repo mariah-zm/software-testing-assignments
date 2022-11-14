@@ -70,7 +70,6 @@ public class AlertListSteps {
 
     @When("I view a list of alerts")
     public void iViewAListOfAlerts() {
-        this.driver.navigate().to(AlertListPageObject.ALERTS_URL);
         this.alerts = new AlertListPageObject(driver).getAlerts();
     }
 
