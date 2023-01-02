@@ -27,8 +27,9 @@ hs_err_pid*
 */target
 */*.iml
 .idea
+*/*/target
 
 # Eclipse
-*/bin
-*/.classpath
-*/.project
+*/*/bin
+*/*/.classpath
+*/*/.project

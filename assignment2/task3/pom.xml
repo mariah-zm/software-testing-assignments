@@ -13,14 +13,13 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <http.client.version>4.5.13</http.client.version>
+        <model.junit.version>2.5</model.junit.version>
+        <junit.version>5.9.0</junit.version>
         <selenium.version>4.7.1</selenium.version>
         <lombok.version>1.18.24</lombok.version>
-        <junit.version>5.9.0</junit.version>
-        <mockito.version>4.8.1</mockito.version>
-        <http.client.version>4.5.13</http.client.version>
         <jackson.version>2.14.0</jackson.version>
         <jackson.datatype.version>2.14.0</jackson.datatype.version>
-        <cucumber.version>7.8.1</cucumber.version>
     </properties>
 
     <dependencies>
@@ -29,6 +28,19 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${http.client.version}</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>nz.ac.waikato.modeljunit</groupId>
+            <artifactId>modeljunit</artifactId>
+            <version>${model.junit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Other Libraries -->

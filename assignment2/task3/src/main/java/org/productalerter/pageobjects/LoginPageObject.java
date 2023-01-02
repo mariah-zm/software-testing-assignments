@@ -14,7 +14,7 @@ public class LoginPageObject {
         this.driver = driver;
     }
 
-    public void login(String userId) {
+    public boolean login(String userId) {
         // Navigating to login page if not already on page
         if (!driver.getCurrentUrl().equals(LOGIN_URL)) {
             this.driver.navigate().to(LOGIN_URL);
@@ -24,6 +24,8 @@ public class LoginPageObject {
         WebElement inputBox = this.driver.findElement(By.id("UserId"));
         inputBox.sendKeys(userId);
         inputBox.submit();
+
+        return this.driver.getCurrentUrl().contains("/Alerts/List");
     }
 
 }
