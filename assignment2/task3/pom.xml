@@ -13,13 +13,13 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <http.client.version>4.5.13</http.client.version>
+        <http.client.version>4.5.14</http.client.version>
         <model.junit.version>2.5</model.junit.version>
         <junit.version>5.9.0</junit.version>
-        <selenium.version>4.7.1</selenium.version>
+        <selenium.version>4.7.2</selenium.version>
         <lombok.version>1.18.24</lombok.version>
-        <jackson.version>2.14.0</jackson.version>
-        <jackson.datatype.version>2.14.0</jackson.datatype.version>
+        <jackson.version>2.14.1</jackson.version>
+        <jackson.datatype.version>2.14.1</jackson.datatype.version>
     </properties>
 
     <dependencies>

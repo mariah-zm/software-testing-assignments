@@ -21,6 +21,4 @@ public class MarketAlertUmResponse {
     private long priceInCents;
     private LocalDateTime postDate;
 
-
-
 }
