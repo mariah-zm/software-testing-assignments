@@ -10,13 +10,11 @@ import nz.ac.waikato.modeljunit.coverage.StateCoverage;
 import nz.ac.waikato.modeljunit.coverage.TransitionPairCoverage;
 import org.junit.jupiter.api.Test;
 import org.productalerter.enums.ProductAlerterStateEnum;
-import org.productalerter.exception.PublisherException;
 import org.productalerter.pageobjects.AlertListPageObject;
 import org.productalerter.pageobjects.AlertPageObject;
 import org.productalerter.service.HttpService;
 import org.productalerter.service.MarketAlertUmPublisher;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
