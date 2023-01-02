@@ -7,12 +7,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.productalerter.converter.ProductToAlert;
 import org.productalerter.exception.PublisherException;
-import org.productalerter.model.domain.MaltaParkProduct;
+import org.productalerter.model.domain.Product;
 import org.productalerter.model.http.MarketAlertUmRequest;
 import org.productalerter.model.http.MarketAlertUmResponse;
 
 import java.io.IOException;
-import java.util.List;
 
 public class MarketAlertUmPublisher {
 
@@ -25,7 +24,7 @@ public class MarketAlertUmPublisher {
         this.userId = userId;
     }
 
-    public MarketAlertUmResponse publishAlert(MaltaParkProduct product) throws IOException, PublisherException {
+    public MarketAlertUmResponse publishAlert(Product product) throws IOException, PublisherException {
         // Preparing request object
         MarketAlertUmRequest alertReq = ProductToAlert.convert(product, userId);
         // Getting json body

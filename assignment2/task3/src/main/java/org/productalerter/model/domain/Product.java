@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MaltaParkProduct {
+public class Product {
 
     private String name;
     private String description;

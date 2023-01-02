@@ -1,13 +1,13 @@
 package org.productalerter.converter;
 
-import org.productalerter.model.domain.MaltaParkProduct;
+import org.productalerter.model.domain.Product;
 import org.productalerter.model.http.MarketAlertUmRequest;
 
 public class ProductToAlert {
 
     private ProductToAlert() {}
 
-    public static MarketAlertUmRequest convert(MaltaParkProduct product, String userId) {
+    public static MarketAlertUmRequest convert(Product product, String userId) {
         MarketAlertUmRequest request = new MarketAlertUmRequest();
         request.setAlertType(product.getCategory().getValue());
         request.setHeading(product.getName());

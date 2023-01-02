@@ -3,13 +3,10 @@ package org.productalerter;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.productalerter.exception.PublisherException;
 import org.productalerter.model.domain.CategoryEnum;
-import org.productalerter.model.domain.MaltaParkProduct;
+import org.productalerter.model.domain.Product;
 import org.productalerter.pageobjects.LoginPageObject;
 import org.productalerter.service.MarketAlertUmPublisher;
-
-import java.io.IOException;
 
 public class ProductAlerter {
 
@@ -64,7 +61,7 @@ public class ProductAlerter {
 
     public void addAlert() {
         try {
-            MaltaParkProduct dummyProduct = getDummyProduct();
+            Product dummyProduct = getDummyProduct();
             publisher.publishAlert(dummyProduct);
             System.out.println("Alert added.");
             numOfAlerts++;
@@ -108,8 +105,8 @@ public class ProductAlerter {
         return driver.getCurrentUrl().equals(LoginPageObject.LOGIN_URL);
     }
 
-    private MaltaParkProduct getDummyProduct() {
-        MaltaParkProduct product = new MaltaParkProduct();
+    private Product getDummyProduct() {
+        Product product = new Product();
         product.setCategory(CategoryEnum.CAR);
         product.setName("Name");
         product.setDescription("Description");
