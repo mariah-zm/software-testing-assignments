@@ -1,0 +1,24 @@
+[system]AUTOMATON::> system() STATE::>start
+User logged.
+[system]MOVED ON METHODCALL: void org.productalerter.ProductAlerter.login(String) TO STATE::> alertsPage
+[system]AUTOMATON::> system() STATE::>alertsPage
+[system]AUTOMATON::> system() STATE::>alertsPage
+Alert added.
+[system]MOVED ON METHODCALL: void org.productalerter.ProductAlerter.addAlert() TO STATE::> alertsPage
+[system]AUTOMATON::> system() STATE::>alertsPage
+Alert added.
+[system]MOVED ON METHODCALL: void org.productalerter.ProductAlerter.addAlert() TO STATE::> alertsPage
+[system]AUTOMATON::> system() STATE::>alertsPage
+Alert added.
+[system]MOVED ON METHODCALL: void org.productalerter.ProductAlerter.addAlert() TO STATE::> alertsPage
+[system]AUTOMATON::> system() STATE::>alertsPage
+Alert added.
+[system]MOVED ON METHODCALL: void org.productalerter.ProductAlerter.addAlert() TO STATE::> alertsPage
+[system]AUTOMATON::> system() STATE::>alertsPage
+Alert added.
+[system]MOVED ON METHODCALL: void org.productalerter.ProductAlerter.addAlert() TO STATE::> alertsPage
+[system]AUTOMATON::> system() STATE::>alertsPage
+Alert added.
+[system]MOVED ON METHODCALL: void org.productalerter.ProductAlerter.addAlert() TO STATE::> alertsPage
+[system]AUTOMATON::> system() STATE::>alertsPage
+[system]MOVED ON METHODCALL: void org.productalerter.ProductAlerter.viewAlerts() TO STATE::> alertsPage
