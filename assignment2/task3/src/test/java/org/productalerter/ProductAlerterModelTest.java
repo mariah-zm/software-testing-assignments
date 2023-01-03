@@ -82,8 +82,8 @@ public class ProductAlerterModelTest implements FsmModel {
 
         // Checking correspondence between SUT and model by comparing login status
         // and ensuring the web application is showing the alerts list
-        assertEquals(isLoggedIn, sut.isLoggedIn(), "The SUT's login status does not match the model's after logging in with valid credentials.");
-        assertTrue(sut.isOnAlertsPage());
+        assertEquals(isLoggedIn, sut.isLoggedIn(), "The model's login status does not match the SUT's after logging in with valid credentials.");
+        assertTrue(sut.isOnAlertsPage(), "The model's page state does not match the SUT's state.");
     }
 
     public boolean invalidLoginGuard() {
@@ -102,8 +102,8 @@ public class ProductAlerterModelTest implements FsmModel {
 
         // Checking correspondence between SUT and model by comparing login status
         // and ensuring the web application is showing the login page
-        assertEquals(isLoggedIn, sut.isLoggedIn(), "The SUT's login status does not match the model's after logging in with invalid credentials.");
-        assertTrue(sut.isOnLoginPage());
+        assertEquals(isLoggedIn, sut.isLoggedIn(), "The model's login status does not match the SUT's after logging in with invalid credentials.");
+        assertTrue(sut.isOnLoginPage(), "The model's page state does not match the SUT's state.");
     }
 
     public boolean logoutGuard() {
@@ -121,8 +121,8 @@ public class ProductAlerterModelTest implements FsmModel {
 
         // Checking correspondence between SUT and model by comparing login status
         // and ensuring the web application is showing the home page
-        assertEquals(isLoggedIn, sut.isLoggedIn(), "The SUT's login status does not match the model's after logging out.");
-        assertTrue(sut.isOnHomePage());
+        assertEquals(isLoggedIn, sut.isLoggedIn(), "The model's login status does not match the SUT's after logging out.");
+        assertTrue(sut.isOnHomePage(), "The model's page state does not match the SUT's state.");
     }
 
     public boolean viewAlertsGuard() {
@@ -149,7 +149,7 @@ public class ProductAlerterModelTest implements FsmModel {
 
             // Checking correspondence between SUT and model by ensuring the web application is showing the prompting
             // the user to log in first
-            assertTrue(sut.isOnLoginPage());
+            assertTrue(sut.isOnLoginPage(), "The model's page state does not match the SUT's state.");
         }
     }
 
@@ -165,8 +165,8 @@ public class ProductAlerterModelTest implements FsmModel {
         // Updating Model
         modelProductAlerter = ProductAlerterStateEnum.HOME_PAGE;
 
-        // Checking correspondence between SUT and model  by ensuring the web application is showing the login page
-        assertTrue(sut.isOnHomePage());
+        // Checking correspondence between SUT and model by ensuring the web application is showing the home page
+        assertTrue(sut.isOnHomePage(), "The model's page state does not match the SUT's state.");
     }
 
     public boolean addAlertGuard() {
@@ -181,12 +181,13 @@ public class ProductAlerterModelTest implements FsmModel {
         // Updating Model - state remains the same
         numOfAlerts++;
 
-        // Checking correspondence between SUT and model  by ensuring the web application is showing the login page
-        assertEquals(numOfAlerts, sut.getNumOfAlerts(), "The SUT's number of alerts is different than the model's after adding an alert.");
+        // Checking correspondence between SUT and model by ensuring the number of alerts on the system were increased
+        // by 1
+        assertEquals(numOfAlerts, sut.getNumOfAlerts(), "The model's number of alerts is different than the SUT's after adding an alert.");
     }
 
     public boolean deleteAlertsGuard() {
-        // Since the API is "independent" of the actions allowed on the web application, this transition can happen on
+        // Since the API is "independent" of the actions allowed on the web application, this transition can happen at
         // any state
         return true;
     }
@@ -197,8 +198,8 @@ public class ProductAlerterModelTest implements FsmModel {
         // Updating Model - state remains the same
         numOfAlerts = 0;
 
-        // Checking correspondence between SUT and model  by ensuring the web application is showing the login page
-        assertEquals(numOfAlerts, sut.getNumOfAlerts(), "The SUT's number of alerts is different than the model's after deleting all alerts.");
+        // Checking correspondence between SUT and model by ensuring the alerts were actually deleted on the system
+        assertEquals(numOfAlerts, sut.getNumOfAlerts(), "The model's number of alerts is different than the SUT's after deleting all alerts.");
     }
 
     /************************************
