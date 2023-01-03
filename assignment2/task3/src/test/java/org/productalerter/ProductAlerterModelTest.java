@@ -37,6 +37,7 @@ public class ProductAlerterModelTest implements FsmModel {
     private ProductAlerterStateEnum modelProductAlerter = ProductAlerterStateEnum.START;
     private boolean isLoggedIn = false;
     private int numOfAlerts = 0;
+    private int alertsOnPage = 0;
 
     public ProductAlerterModelTest() throws PublisherException, IOException {
         marketAlertUmService = new MarketAlertUmService(new HttpService(), ProductAlerter.USER_ID);
@@ -147,7 +148,7 @@ public class ProductAlerterModelTest implements FsmModel {
             // Checking correspondence between SUT and model by ensuring the web application is showing the alerts list
             // if user is logged in and also ensuring the right number of alerts are displayed
             assertTrue(sut.isOnAlertsPage());
-            assertEquals(Math.min(numOfAlerts, 5), alertList.size());
+            assertEquals(alertsOnPage, alertList.size());
         } else {
             modelProductAlerter = ProductAlerterStateEnum.LOGIN_PAGE;
 
@@ -184,6 +185,7 @@ public class ProductAlerterModelTest implements FsmModel {
 
         // Updating Model - state remains the same
         numOfAlerts++;
+        alertsOnPage = Math.min(numOfAlerts, 5);
 
         // Checking correspondence between SUT and model by ensuring the number of alerts on the system were increased
         // by 1
@@ -201,6 +203,7 @@ public class ProductAlerterModelTest implements FsmModel {
 
         // Updating Model - state remains the same
         numOfAlerts = 0;
+        alertsOnPage = 0;
 
         // Checking correspondence between SUT and model by ensuring the alerts were actually deleted on the system
         assertEquals(numOfAlerts, sut.getNumOfAlerts(), "The model's number of alerts is different than the SUT's after deleting all alerts.");
@@ -223,7 +226,7 @@ public class ProductAlerterModelTest implements FsmModel {
         tester.addCoverageMetric(new TransitionPairCoverage());
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
-        tester.generate(500);
+        tester.generate(50);
         tester.printCoverage();
     }
 

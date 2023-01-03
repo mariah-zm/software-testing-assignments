@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.productalerter.exception.PublisherException;
 import org.productalerter.model.domain.CategoryEnum;
 import org.productalerter.model.domain.Product;
+import org.productalerter.pageobjects.AlertListPageObject;
 import org.productalerter.pageobjects.LoginPageObject;
 import org.productalerter.service.MarketAlertUmService;
 
@@ -24,9 +25,11 @@ public class ProductAlerter {
 
     // Variables required by system
     @Getter
-    private boolean isLoggedIn;
+    private boolean isLoggedIn = false;
     @Getter
-    private int numOfAlerts;
+    private int numOfAlerts = 0;
+    @Getter
+    private int alertsOnPage = 0;
 
     public ProductAlerter(MarketAlertUmService publisher) throws PublisherException, IOException {
         driver = new ChromeDriver();
@@ -58,7 +61,6 @@ public class ProductAlerter {
         try {
             Product dummyProduct = getDummyProduct();
             publisher.publishAlert(dummyProduct);
-            //System.out.println("Alert added.");
             numOfAlerts++;
         } catch (Exception ex) {
             System.out.println("Error adding alert: " + ex.getMessage());
@@ -69,7 +71,6 @@ public class ProductAlerter {
         try {
             String message = publisher.deleteAllAlerts();
             int numAlertsDeleted = Integer.parseInt(message.replaceAll("[^0-9]", ""));
-            //System.out.println("Deleted " + numAlertsDeleted + " alerts.");
             numOfAlerts = numOfAlerts - numAlertsDeleted;
         } catch (Exception ex) {
             System.out.println("Error deleting alerts: " + ex.getMessage());
@@ -78,6 +79,9 @@ public class ProductAlerter {
 
     public void viewAlerts() {
         driver.navigate().to(ALERTS_URL);
+        if (isLoggedIn) {
+            alertsOnPage = new AlertListPageObject(driver).getAlerts().size();
+        }
     }
 
     public void viewHome() {
