@@ -36,12 +36,12 @@ public class AlertValidatorModelTest implements FsmModel {
     private AlertValidatorStateEnum modelAlertValidator = AlertValidatorStateEnum.START;
     private CategoryEnum alertType;
 
-    private final String[] iconNames = {"icon-car.png",
-                                        "icon-boat.png",
-                                        "icon-property-rent.jpg",
-                                        "icon-property-sale.jpg",
-                                        "icon-toys.png",
-                                        "icon-electronics.png"};
+    private final String[] iconNames = {"icon-car",
+                                        "icon-boat",
+                                        "icon-property-rent",
+                                        "icon-property-sale",
+                                        "icon-toys",
+                                        "icon-electronics"};
 
     public AlertValidatorModelTest() throws PublisherException, IOException {
         marketAlertUmService = new MarketAlertUmService(new HttpService(), ProductAlerter.USER_ID);
@@ -221,7 +221,7 @@ public class AlertValidatorModelTest implements FsmModel {
         tester.addCoverageMetric(new TransitionPairCoverage());
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
-        tester.generate(25);
+        tester.generate(30);
         tester.printCoverage();
     }
 }

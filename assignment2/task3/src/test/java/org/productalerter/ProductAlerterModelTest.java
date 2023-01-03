@@ -60,11 +60,12 @@ public class ProductAlerterModelTest implements FsmModel {
             sut.deleteDriver();
             sut = new ProductAlerter(marketAlertUmService);
         }
-        // To flush out event log sue to 500 response code
+        // To flush out event log due to 500 response code
         marketAlertUmService.getEventLog();
         modelProductAlerter = ProductAlerterStateEnum.START;
         isLoggedIn = false;
         numOfAlerts = 0;
+        alertsOnPage = 0;
     }
 
     /************************************
@@ -226,7 +227,7 @@ public class ProductAlerterModelTest implements FsmModel {
         tester.addCoverageMetric(new TransitionPairCoverage());
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
-        tester.generate(50);
+        tester.generate(500);
         tester.printCoverage();
     }
 
