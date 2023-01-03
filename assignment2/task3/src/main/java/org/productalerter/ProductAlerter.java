@@ -3,10 +3,13 @@ package org.productalerter;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.productalerter.exception.PublisherException;
 import org.productalerter.model.domain.CategoryEnum;
 import org.productalerter.model.domain.Product;
 import org.productalerter.pageobjects.LoginPageObject;
 import org.productalerter.service.MarketAlertUmPublisher;
+
+import java.io.IOException;
 
 public class ProductAlerter {
 
@@ -25,20 +28,12 @@ public class ProductAlerter {
     @Getter
     private int numOfAlerts;
 
-    public ProductAlerter(MarketAlertUmPublisher publisher) throws InterruptedException {
+    public ProductAlerter(MarketAlertUmPublisher publisher) throws PublisherException, IOException {
         driver = new ChromeDriver();
         this.publisher = publisher;
 
         // Deleting all alerts on system start up
-        while (true) {
-            try {
-                publisher.deleteAllAlerts();
-                break;
-            } catch (Exception exception) {
-                // If error occurs, wait a 2s and retry
-                Thread.sleep(2000);
-            }
-        }
+        publisher.deleteAllAlerts();
     }
 
     public void login(String credentials) {
@@ -71,18 +66,24 @@ public class ProductAlerter {
     }
 
     public void deleteAlerts() {
-        try {
-            String message = publisher.deleteAllAlerts();
-            int numAlertsDeleted = Integer.parseInt(message.replaceAll("[^0-9]", ""));
-            System.out.println("Deleted " + numAlertsDeleted + " alerts.");
-            numOfAlerts = numOfAlerts - numAlertsDeleted;
-        } catch (Exception ex) {
-            System.out.println("Error deleting alerts: " + ex.getMessage());
+        if (numOfAlerts > 0) {
+            try {
+                String message = publisher.deleteAllAlerts();
+                int numAlertsDeleted = Integer.parseInt(message.replaceAll("[^0-9]", ""));
+                System.out.println("Deleted " + numAlertsDeleted + " alerts.");
+                numOfAlerts = numOfAlerts - numAlertsDeleted;
+            } catch (Exception ex) {
+                System.out.println("Error deleting alerts: " + ex.getMessage());
+            }
+        } else {
+            throw new IllegalStateException();
         }
     }
 
     public void viewAlerts() {
-        driver.navigate().to(ALERTS_URL);
+        if (isLoggedIn) {
+            driver.navigate().to(ALERTS_URL);
+        }
     }
 
     public void viewHome() {

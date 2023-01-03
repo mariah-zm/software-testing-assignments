@@ -10,11 +10,13 @@ import nz.ac.waikato.modeljunit.coverage.StateCoverage;
 import nz.ac.waikato.modeljunit.coverage.TransitionPairCoverage;
 import org.junit.jupiter.api.Test;
 import org.productalerter.enums.ProductAlerterStateEnum;
+import org.productalerter.exception.PublisherException;
 import org.productalerter.pageobjects.AlertListPageObject;
 import org.productalerter.pageobjects.AlertPageObject;
 import org.productalerter.service.HttpService;
 import org.productalerter.service.MarketAlertUmPublisher;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -36,7 +38,7 @@ public class ProductAlerterModelTest implements FsmModel {
     private boolean isLoggedIn = false;
     private int numOfAlerts = 0;
 
-    public ProductAlerterModelTest() throws InterruptedException {
+    public ProductAlerterModelTest() throws PublisherException, IOException {
         publisher = new MarketAlertUmPublisher(new HttpService(), ProductAlerter.USER_ID);
         sut = new ProductAlerter(publisher);
     }
@@ -187,9 +189,7 @@ public class ProductAlerterModelTest implements FsmModel {
     }
 
     public boolean deleteAlertsGuard() {
-        // Since the API is "independent" of the actions allowed on the web application, this transition can happen at
-        // any state
-        return true;
+        return numOfAlerts > 0;
     }
     public @Action void deleteAlerts() {
         // Updating SUT
