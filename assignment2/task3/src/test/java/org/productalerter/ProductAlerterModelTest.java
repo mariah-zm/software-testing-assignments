@@ -59,6 +59,8 @@ public class ProductAlerterModelTest implements FsmModel {
             sut.deleteDriver();
             sut = new ProductAlerter(marketAlertUmService);
         }
+        // To flush out event log sue to 500 response code
+        marketAlertUmService.getEventLog();
         modelProductAlerter = ProductAlerterStateEnum.START;
         isLoggedIn = false;
         numOfAlerts = 0;
@@ -189,7 +191,9 @@ public class ProductAlerterModelTest implements FsmModel {
     }
 
     public boolean deleteAlertsGuard() {
-        return numOfAlerts > 0;
+        // Since the API is "independent" of the actions allowed on the web application, this transition can happen on
+        // any state
+        return true;
     }
     public @Action void deleteAlerts() {
         // Updating SUT
@@ -219,7 +223,7 @@ public class ProductAlerterModelTest implements FsmModel {
         tester.addCoverageMetric(new TransitionPairCoverage());
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
-        tester.generate(300);
+        tester.generate(500);
         tester.printCoverage();
     }
 

@@ -66,24 +66,18 @@ public class ProductAlerter {
     }
 
     public void deleteAlerts() {
-        if (numOfAlerts > 0) {
-            try {
-                String message = publisher.deleteAllAlerts();
-                int numAlertsDeleted = Integer.parseInt(message.replaceAll("[^0-9]", ""));
-                //System.out.println("Deleted " + numAlertsDeleted + " alerts.");
-                numOfAlerts = numOfAlerts - numAlertsDeleted;
-            } catch (Exception ex) {
-                System.out.println("Error deleting alerts: " + ex.getMessage());
-            }
-        } else {
-            throw new IllegalStateException();
+        try {
+            String message = publisher.deleteAllAlerts();
+            int numAlertsDeleted = Integer.parseInt(message.replaceAll("[^0-9]", ""));
+            //System.out.println("Deleted " + numAlertsDeleted + " alerts.");
+            numOfAlerts = numOfAlerts - numAlertsDeleted;
+        } catch (Exception ex) {
+            System.out.println("Error deleting alerts: " + ex.getMessage());
         }
     }
 
     public void viewAlerts() {
-        if (isLoggedIn) {
-            driver.navigate().to(ALERTS_URL);
-        }
+        driver.navigate().to(ALERTS_URL);
     }
 
     public void viewHome() {

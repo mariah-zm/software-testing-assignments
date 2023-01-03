@@ -213,7 +213,7 @@ public class AlertValidatorModelTest implements FsmModel {
         System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
 
         // Giving this instance of the test class as to not have extra web driver windows open
-        final RandomTester tester = new RandomTester(this);
+        final GreedyTester tester = new GreedyTester(this);
         tester.setRandom(new Random());
         tester.buildGraph();
         tester.addListener(new StopOnFailureListener());
@@ -221,7 +221,7 @@ public class AlertValidatorModelTest implements FsmModel {
         tester.addCoverageMetric(new TransitionPairCoverage());
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
-        tester.generate(50);
+        tester.generate(25);
         tester.printCoverage();
     }
 }
