@@ -36,17 +36,12 @@ public class ProductAlerter {
     }
 
     public void login(String credentials) {
-        if (!isLoggedIn) {
-            driver.navigate().to(HOME_URL);
-            isLoggedIn = new LoginPageObject(driver).login(credentials);
-        }
+        isLoggedIn = new LoginPageObject(driver).login(credentials);
     }
 
     public void logout() {
-        if (isLoggedIn) {
-            driver.navigate().to(LOGOUT_URL);
-            isLoggedIn = !driver.getCurrentUrl().equals(HOME_URL);
-        }
+        driver.navigate().to(LOGOUT_URL);
+        isLoggedIn = !driver.getCurrentUrl().equals(HOME_URL);
     }
 
     public void addAlert() {
@@ -123,6 +118,7 @@ public class ProductAlerter {
 	                break;
 	            case 2: 
 	            	runner.login("user123");
+	            	break;
 	            case 3:
 	                runner.logout();
 	                break;
@@ -158,15 +154,15 @@ public class ProductAlerter {
     
     private void printMenu() {
         System.out.println("****MAIN MENU****:\n" +
-        		"Logged in: " + isLoggedIn + "\n" +
-        		"Number of alerts: " + numOfAlerts + "\n" +
-                "1. VALID LOGIN\n" +
-        		"2. INVALID LOGIN\n" +
-                "3. LOGOUT\n" +
-                "4. ADD ALERT\n" +
-                "5. DELETE ALERTS\n" +
-                "6. VIEW ALERTS\n" + 
-                "7. VIEW HOME");
+        	"Logged in: " + isLoggedIn + "\n" +
+        	"Number of alerts: " + numOfAlerts + "\n" +
+        	"1. VALID LOGIN\n" +
+        	"2. INVALID LOGIN\n" +
+        	"3. LOGOUT\n" +
+        	"4. ADD ALERT\n" +
+        	"5. DELETE ALERTS\n" +
+        	"6. VIEW ALERTS\n" + 
+        	"7. VIEW HOME");
     }
 
 }

@@ -6,12 +6,14 @@ import org.productalerter.ProductAlerter;
 
 GLOBAL {
 	VARIABLES {
+		String validCreds = "b9ed2dbc-141a-4395-921d-ee8779610e1f";
 		boolean loggedIn = false;
 		int numOfAlerts = 0;
+		int alertsOnPage = 0;
 	}
 	
 	EVENTS {
-		login() = {*.login()}
+		login(String userId) = {*.login(userId)}
 		logout() = {*.logout()}
 		deleteAlerts() = {*.deleteAlerts()}
 		addAlert() = {*.addAlert()}
@@ -22,8 +24,6 @@ GLOBAL {
 	PROPERTY system {
 		STATES {
 			BAD {
-				badDelete
-				badAdd
 				badLogout
 				badLogin
 			}
@@ -38,60 +38,62 @@ GLOBAL {
 		}
 		
 		TRANSITIONS {
-			start -> start [addAlert\isAlertAdded()==true\numOfAlerts++; System.out.println("Alert added.");]
-			start -> start [deleteAlerts\areAlertsDeleted()==true\numOfAlerts=0; System.out.println("Deleted all alerts.");]
+			%% ------------------ START STATE -------------------------------------------------
+			
+			%% add & delete
+			start -> start [addAlert\\numOfAlerts++; System.out.println("Alert added.");]
+			start -> start [deleteAlerts\\numOfAlerts=0; System.out.println("Deleted all alerts.");]
+			%% view home & alerts
 			start -> loginPage [viewAlerts\\System.out.println("User needs to be logged in to view alerts.");]
-			start -> loginPage [login\getLoginStatus()==false\System.out.println("User gave invalid credentials during login.");]
-			start -> alertsPage [login\getLoginStatus()==true\loggedIn = true; System.out.println("User logged.");]
-			start -> homePage [viewHome\\]
+			start -> homePage [viewHome\\System.out.println("Viewing home page.");]
+			%% login & logout
+			start -> alertsPage [login\userId.equals(validCreds)\loggedIn = true; System.out.println("User logged.");]
+			start -> loginPage [login\\System.out.println("User gave invalid credentials during login.");]
 			start -> badLogout [logout\\System.out.println("Cannot log out because user is not logged in. Entering bad state!");]
-			start -> badAdd [addAlert\isAlertAdded()==false\System.out.println("Alert was not added. Entering bad state!");]
-			start -> badDelete [deleteAlerts\areAlertsDeleted()==false\System.out.println("Alerts not deleted. Entering bad state!");]
+		
+		
+			%% ------------------ LOGIN STATE -------------------------------------------------
 			
-			loginPage -> loginPage [addAlert\isAlertAdded()==true\numOfAlerts++; System.out.println("Alert added.");]
-			loginPage -> loginPage [deleteAlerts\areAlertsDeleted()==true\numOfAlerts=0; System.out.println("Deleted all alerts.");]
-			loginPage -> loginPage [login\getLoginStatus()==false\System.out.println("User gave invalid credentials during login.");]
-			loginPage -> alertsPage [login\getLoginStatus()==true\loggedIn = true;System.out.println("User logged.");]
+			%% add & delete
+			loginPage -> loginPage [addAlert\\numOfAlerts++; System.out.println("Alert added.");]
+			loginPage -> loginPage [deleteAlerts\\numOfAlerts=0; System.out.println("Deleted all alerts.");]
+			%% view home & alerts
 			loginPage -> loginPage [viewAlerts\\System.out.println("User needs to be logged in to view alerts.");]
-			loginPage -> homePage [viewHome\\]
+			loginPage -> homePage [viewHome\\System.out.println("Viewing home page.");]
+			%% login & logout
+			loginPage -> alertsPage [login\userId.equals(validCreds)\loggedIn = true; alertsOnPage = Math.min(5, numOfAlerts); System.out.println("User logged in.");]
+			loginPage -> loginPage [login\\System.out.println("User gave invalid credentials during login.");]
 			loginPage -> badLogout [logout\\System.out.println("Cannot log out because user is not logged in. Entering bad state!");]
-			loginPage -> badAdd [addAlert\isAlertAdded()==false\System.out.println("Alert was not added. Entering bad state!");]
-			loginPage -> badDelete [deleteAlerts\areAlertsDeleted()==false\System.out.println("Alerts not deleted. Entering bad state!");]
+	
+	
+			%% ------------------ ALERTS STATE -------------------------------------------------
 			
-			alertsPage -> alertsPage [addAlert\isAlertAdded()==true\numOfAlerts++;System.out.println("Alert added.");]
-			alertsPage -> alertsPage [deleteAlerts\areAlertsDeleted()==true\numOfAlerts=0; System.out.println("Deleted all alerts.");]
-			alertsPage -> homePage [logout\getLoginStatus()==false\loggedIn=false;]
-			alertsPage -> homePage [viewHome\\]
-			alertsPage -> alertsPage [viewAlerts\\]
-			alertsPage -> badAdd [addAlert\isAlertAdded()==false\System.out.println("Alert was not added. Entering bad state!");]
-			alertsPage -> badDelete [deleteAlerts\areAlertsDeleted()==false\System.out.println("Alerts not deleted. Entering bad state!");]
+			%% add & delete
+			alertsPage -> alertsPage [addAlert\\numOfAlerts++; System.out.println("Alert added.");]
+			alertsPage -> alertsPage [deleteAlerts\\numOfAlerts=0; System.out.println("Deleted all alerts.");]
+			%% view home & alerts
+			alertsPage -> alertsPage [viewAlerts\\alertsOnPage = Math.min(5, numOfAlerts); System.out.println("Viewing alerts.");]
+			alertsPage -> homePage [viewHome\\System.out.println("Viewing home page.");]
+			%% login & logout			
+			alertsPage -> homePage [logout\\loggedIn=false;]
+			alertsPage -> badLogin [login\\System.out.println("User already logged in. Entering bad state!");]
+	
+	
+			%% ------------------ HOME STATE ---------------------------------------------------
 			
-			homePage -> homePage [addAlert\isAlertAdded()==true\numOfAlerts++;System.out.println("Alert added.");]
-			homePage -> homePage [deleteAlerts\areAlertsDeleted()==true\numOfAlerts=0; System.out.println("Deleted all alerts.");]
-			homePage -> loginPage [login\getLoginStatus()==false\System.out.println("User gave invalid credentials during login.");]
-			homePage -> alertsPage [login\getLoginStatus()==true\loggedIn=true;]
-			homePage -> alertsPage [viewAlerts\loggedIn==true\]
+			%% add & delete
+			homePage -> homePage [addAlert\\numOfAlerts++; System.out.println("Alert added.");]
+			homePage -> homePage [deleteAlerts\\numOfAlerts=0; System.out.println("Deleted all alerts.");]
+			%% view home & alerts
 			homePage -> loginPage [viewAlerts\loggedIn==false\System.out.println("User needs to be logged in to view alerts.");]
-			homePage -> homePage [logout\loggedIn==true && getLoginStatus()==false\loggedIn=false;]
-			homePage -> homePage [viewHome\\]
+			homePage -> alertsPage [viewAlerts\loggedIn==true\System.out.println("Viewing alerts.");]
+			homePage -> homePage [viewHome\\System.out.println("Viewing home page.");]
+			%% login & logout
+			homePage -> alertsPage [login\loggedIn==false && userId.equals(validCreds)\loggedIn = true; alertsOnPage = Math.min(5, numOfAlerts); System.out.println("User logged in.");]
+			homePage -> loginPage [login\loggedIn==false\System.out.println("User gave invalid credentials during login.");]
+			homePage -> badLogin [login\loggedIn==true\System.out.println("User is already logged in. Entering bad state!");]
+			homePage -> homePage [logout\loggedIn==true\loggedIn=false; System.out.println("User logged out.");]
 			homePage -> badLogout [logout\loggedIn==false\System.out.println("Cannot log out because user is not logged in. Entering bad state!");]
-			homePage -> badAdd [addAlert\isAlertAdded()==false\System.out.println("Alert was not added. Entering bad state!");]
-			homePage -> badDelete [deleteAlerts\areAlertsDeleted()==false\System.out.println("Alerts not deleted. Entering bad state!");]
-			
 		}
-	}
-}
-
-METHODS {
-	boolean getLoginStatus() {
-		return true;
-	}
-	
-	boolean isAlertAdded() {
-		return true;
-	}
-	
-	boolean areAlertsDeleted() {
-		return true;
 	}
 }
