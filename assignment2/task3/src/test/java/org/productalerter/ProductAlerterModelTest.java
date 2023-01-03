@@ -14,7 +14,7 @@ import org.productalerter.exception.PublisherException;
 import org.productalerter.pageobjects.AlertListPageObject;
 import org.productalerter.pageobjects.AlertPageObject;
 import org.productalerter.service.HttpService;
-import org.productalerter.service.MarketAlertUmPublisher;
+import org.productalerter.service.MarketAlertUmService;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ProductAlerterModelTest implements FsmModel {
 
     private final String DRIVER_PATH = "src/main/resources/chromedriver";
 
-    private MarketAlertUmPublisher publisher;
+    private MarketAlertUmService marketAlertUmService;
 
     // Linking SUT
     private ProductAlerter sut;
@@ -39,8 +39,8 @@ public class ProductAlerterModelTest implements FsmModel {
     private int numOfAlerts = 0;
 
     public ProductAlerterModelTest() throws PublisherException, IOException {
-        publisher = new MarketAlertUmPublisher(new HttpService(), ProductAlerter.USER_ID);
-        sut = new ProductAlerter(publisher);
+        marketAlertUmService = new MarketAlertUmService(new HttpService(), ProductAlerter.USER_ID);
+        sut = new ProductAlerter(marketAlertUmService);
     }
 
     /************************************
@@ -57,7 +57,7 @@ public class ProductAlerterModelTest implements FsmModel {
     public void reset(boolean b) {
         if (b) {
             sut.deleteDriver();
-            sut = new ProductAlerter(publisher);
+            sut = new ProductAlerter(marketAlertUmService);
         }
         modelProductAlerter = ProductAlerterStateEnum.START;
         isLoggedIn = false;
@@ -219,7 +219,7 @@ public class ProductAlerterModelTest implements FsmModel {
         tester.addCoverageMetric(new TransitionPairCoverage());
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
-        tester.generate(250);
+        tester.generate(300);
         tester.printCoverage();
     }
 

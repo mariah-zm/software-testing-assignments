@@ -7,7 +7,7 @@ import org.productalerter.exception.PublisherException;
 import org.productalerter.model.domain.CategoryEnum;
 import org.productalerter.model.domain.Product;
 import org.productalerter.pageobjects.LoginPageObject;
-import org.productalerter.service.MarketAlertUmPublisher;
+import org.productalerter.service.MarketAlertUmService;
 
 import java.io.IOException;
 
@@ -20,7 +20,7 @@ public class ProductAlerter {
 
     @Getter
     private final WebDriver driver;
-    private final MarketAlertUmPublisher publisher;
+    private final MarketAlertUmService publisher;
 
     // Variables required by system
     @Getter
@@ -28,7 +28,7 @@ public class ProductAlerter {
     @Getter
     private int numOfAlerts;
 
-    public ProductAlerter(MarketAlertUmPublisher publisher) throws PublisherException, IOException {
+    public ProductAlerter(MarketAlertUmService publisher) throws PublisherException, IOException {
         driver = new ChromeDriver();
         this.publisher = publisher;
 
@@ -58,7 +58,7 @@ public class ProductAlerter {
         try {
             Product dummyProduct = getDummyProduct();
             publisher.publishAlert(dummyProduct);
-            System.out.println("Alert added.");
+            //System.out.println("Alert added.");
             numOfAlerts++;
         } catch (Exception ex) {
             System.out.println("Error adding alert: " + ex.getMessage());
@@ -70,7 +70,7 @@ public class ProductAlerter {
             try {
                 String message = publisher.deleteAllAlerts();
                 int numAlertsDeleted = Integer.parseInt(message.replaceAll("[^0-9]", ""));
-                System.out.println("Deleted " + numAlertsDeleted + " alerts.");
+                //System.out.println("Deleted " + numAlertsDeleted + " alerts.");
                 numOfAlerts = numOfAlerts - numAlertsDeleted;
             } catch (Exception ex) {
                 System.out.println("Error deleting alerts: " + ex.getMessage());
